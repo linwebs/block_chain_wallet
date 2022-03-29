@@ -1,4 +1,5 @@
 import os
+import codecs
 
 from flask import Flask, render_template, session, request, redirect, url_for
 from web3 import Web3
@@ -29,6 +30,10 @@ def set_network():
 	network = request.form.get('network')
 	session['network'] = network
 	return redirect(url_for('page_choose_network'))
+
+@app.route('/search')
+def page_search():
+	return render_template('search.html', page='search', network=get_choose_network())
 
 
 @app.route('/search/highest_block')
@@ -62,6 +67,23 @@ def page_transaction_info():
 						   page='search',
 						   network=get_choose_network(),
 						   transaction=get_transaction(transaction))
+
+
+@app.route('/search/to-utf-8', methods=['POST'])
+def page_to_utf_8():
+	data = request.form.get('data')
+	return bytes.fromhex(data[2:]).decode('utf-8')
+
+@app.route('/wallet')
+def page_wallet():
+	return render_template('wallet.html', page='wallet', network=get_choose_network())
+
+
+@app.route('/note')
+def page_note():
+	return render_template('note.html', page='note', network=get_choose_network())
+
+
 
 
 def get_transaction(transaction):

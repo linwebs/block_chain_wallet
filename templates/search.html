@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block sub_title %}查詢{% endblock sub_title %}
+{% block body %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-light text-center">-- 查詢 --</div>
+			</div>
+
+			<div class="col-md-6 col-sm-12 mb-2">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">最高的區塊</h5>
+						<p class="card-text">查看目前最高的區塊{{ block }}</p>
+						<a href="/search/highest_block" class="btn btn-primary">前往查看</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 col-sm-12 mb-2">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">區塊中的交易</h5>
+						<p class="card-text">查看區塊中的所有交易</p>
+						<form action="/search/block" method="get" class="row g-3 align-items-center">
+							<div class="col-auto">
+								<label for="input-block-num-tran" class="col-form-label">區塊</label>
+							</div>
+							<div class="col-auto">
+								<input type="number" name="block" id="input-block-num-tran" class="form-control"
+									   placeholder="請輸入區塊的高度">
+							</div>
+							<div class="col-auto">
+								<input type="submit" class="btn btn-primary" value="查詢">
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 col-sm-12 mb-2">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">交易細節</h5>
+						<p class="card-text">查看交易的內容</p>
+						<form action="/search/transaction" method="get" class="row g-3 align-items-center">
+							<div class="col-auto">
+								<label for="input-block-num-tran" class="col-form-label">交易 Hash</label>
+							</div>
+							<div class="col-auto">
+								<input type="text" name="transaction" id="input-block-num-tran" class="form-control"
+									   placeholder="請輸入交易 的 Hash">
+							</div>
+							<div class="col-auto">
+								<input type="submit" class="btn btn-primary" value="查詢">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock body %}

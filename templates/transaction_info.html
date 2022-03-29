@@ -75,6 +75,10 @@
 							<td>input</td>
 							<td>
 								<textarea class="form-control">{{ transaction['input'] }}</textarea>
+								<form action="/search/to-utf-8" method="post">
+									<input type="hidden" name="data" value="{{ transaction['input'] }}">
+									<input type="submit" class="btn btn-primary mt-2" value="轉換為 UTF-8">
+								</form>
 							</td>
 						</tr>
 						</tbody>
