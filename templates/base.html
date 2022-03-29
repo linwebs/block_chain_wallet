@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="/static/bootstrap.min.css" rel="stylesheet">
+	<title>👀🪙🤣.jpg - {% block sub_title %}{% endblock sub_title %}</title>
+</head>
+<body>
+<header class="border-bottom">
+	<div class="container d-flex flex-wrap justify-content-center py-3">
+		<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none pe-2">
+			<span class="fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom"
+				  title="專門看NFT的錢包哈哈.jpg">👀🪙🤣.jpg</span>
+		</a>
+		<ul class="nav nav-pills">
+			<li class="nav-item">
+				<a href="/" class="nav-link {% if page == 'index' %}active{% endif %}">首頁</a>
+			</li>
+			<li class="nav-item">
+				<a href="/search" class="nav-link {% if page == 'search' %}active{% endif %}">查詢</a>
+			</li>
+			<li class="nav-item">
+				<a href="/wallet" class="nav-link {% if page == 'wallet' %}active{% endif %}">錢包</a>
+			</li>
+			<li class="nav-item">
+				<a href="/network" class="nav-link {% if page == 'network' %}active{% endif %}">網路【{{ network }}】</a>
+			</li>
+		</ul>
+	</div>
+</header>
+{% block body %}{% endblock body %}
+<script src="/static/bootstrap.bundle.min.js"></script>
+<script>
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+	})
+</script>
+</body>
+</html>

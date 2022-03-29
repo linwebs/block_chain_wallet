@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block sub_title %}區塊資訊{% endblock sub_title %}
+{% block body %}
+	<div class="container-fluid mt-3">
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-warning">
+					目前選擇的區塊為: {{ block.number }}，此區塊的交易共有{{ block.transactions|list|length }}筆
+				</div>
+			</div>
+			<p></p>
+			<div class="row">
+				<div class="col-sm-12 col-md-8 offset-md-2">
+					<table class="table">
+						<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">交易 hash</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for i in block.transactions %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>
+									<a href="/search/transaction?transaction={{ i.hex() }}"
+									   class="text-decoration-none text-black">{{ i.hex() }}</a>
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock body %}

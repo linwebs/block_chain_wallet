@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block sub_title %}最高的區塊{% endblock sub_title %}
+{% block body %}
+	<div class="container-fluid mt-3">
+		<div class="row">
+			<p class="text-center display-4">{{ network }}此網路目前最高的區塊為:
+				<a href="/search/block?block={{ block_num }}"
+				   class="text-decoration-none text-black">{{ block_num }}</a>
+			</p>
+
+		</div>
+	</div>
+{% endblock body %}

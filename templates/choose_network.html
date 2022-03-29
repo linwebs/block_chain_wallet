@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block sub_title %}選擇網路{% endblock sub_title %}
+{% block body %}
+	<div class="container-fluid mt-3">
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-warning">目前選擇的網路為: {{ network }}</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Mainnet</h5>
+						<p class="card-text">乙太坊主網路</p>
+						<form action="/network" method="post">
+							<input type="hidden" name="network" value="mainnet">
+							<input type="submit" class="btn btn-primary" value="選擇">
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Rinkeby</h5>
+						<p class="card-text">乙太坊測試路</p>
+						<form action="/network" method="post">
+							<input type="hidden" name="network" value="rinkeby">
+							<input type="submit" class="btn btn-primary" value="選擇">
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Ropsten</h5>
+						<p class="card-text">乙太坊測試路</p>
+						<form action="/network" method="post">
+							<input type="hidden" name="network" value="ropsten">
+							<input type="submit" class="btn btn-primary" value="選擇">
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Kovan</h5>
+						<p class="card-text">乙太坊測試路</p>
+						<form action="/network" method="post">
+							<input type="hidden" name="network" value="kovan">
+							<input type="submit" class="btn btn-primary" value="選擇">
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Görli (Goerli)</h5>
+						<p class="card-text">乙太坊測試路</p>
+						<form action="/network" method="post">
+							<input type="hidden" name="network" value="goerli">
+							<input type="submit" class="btn btn-primary" value="選擇">
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endblock body %}
