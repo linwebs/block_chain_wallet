@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block sub_title %}交易{% endblock sub_title %}
+{% block body %}
+	<div class="container">
+		<p class="display-5 text-center">交易</p>
+		<form action="" method="post">
+			<div class="mb-3">
+				<label for="send" class="form-label">發送者 </label>
+				<select class="form-select" name="send" id="send" aria-describedby="send-help">
+					<option selected>-- 請選擇發送者的錢包地址 --</option>
+					{% for i in wallets %}
+						<option>{{ i['key'] }}</option>
+					{% endfor %}
+				</select>
+				<div id="send-help" class="form-text">若錢包尚未出現在列表上，請先利用查詢公鑰功能匯入錢包</div>
+			</div>
+			<div class="mb-3">
+				<label for="receive" class="form-label">接收者</label>
+				<input type="text" class="form-control" name="receive" id="receiver" placeholder="請輸入接收者的錢包地址">
+			</div>
+			<div class="mb-3">
+				<label for="value" class="form-label">數量 (wei)</label>
+				<input type="number" class="form-control" name="value" id="value" value="0" placeholder="請輸入接收者的錢包地址">
+			</div>
+			<div class="mb-3">
+				<label for="gas" class="form-label">gas (wei)</label>
+				<input type="number" class="form-control" name="gas" id="gas" value="21000"
+					   placeholder="請輸入最多願意付多少 gas">
+			</div>
+			<div class="mb-3">
+				<label for="gas_price" class="form-label">gas price (gwei)</label>
+				<input type="number" class="form-control" name="gas_price" id="gas_price" value="50"
+					   placeholder="請輸入每個 gas 願意付多少手續費">
+			</div>
+			<div class="mb-3">
+				<label for="data" class="form-label">資料</label>
+				<textarea class="form-control" id="data" name="data" rows="3" placeholder="請輸入要附加的文字"></textarea>
+			</div>
+			<div class="d-grid gap-2 mb-5">
+				<button type="button" class="btn btn-primary btn-" data-bs-toggle="modal"
+						data-bs-target="#confirm-modal">
+					交易
+				</button>
+			</div>
+
+			<div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-modal-mabel"
+				 aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="confirm-modal-mabel">確認</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							交易一旦送出，將不可取消，是否確認交易？
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+							<input type="submit" class="btn btn-primary" value="確認交易">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock body %}

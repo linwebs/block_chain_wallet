@@ -12,20 +12,24 @@
 							<td>{{ transaction.hash.hex() }}</td>
 						</tr>
 						<tr>
-							<td>blockHash</td>
+							<td>區塊 Hash</td>
 							<td>{{ transaction['blockHash'].hex() }}</td>
 						</tr>
 						<tr>
-							<td>blockNumber</td>
-							<td>{{ transaction['blockNumber'] }}</td>
+							<td>區塊編號</td>
+							<td><a href="/search/block?block={{ transaction['blockNumber'] }}">{{ transaction['blockNumber'] }}</a></td>
 						</tr>
 						<tr>
-							<td>from</td>
-							<td>{{ transaction['from'] }}</td>
+							<td>傳送</td>
+							<td><a href="/wallet/balance?address={{ transaction['from'] }}">{{ transaction['from'] }}</a></td>
 						</tr>
 						<tr>
-							<td>to</td>
-							<td>{{ transaction['to'] }}</td>
+							<td>接收</td>
+							<td><a href="/wallet/balance?address={{ transaction['to'] }}">{{ transaction['to'] }}</a></td>
+						</tr>
+						<tr>
+							<td>數量</td>
+							<td>{{ transaction['value'] }}</td>
 						</tr>
 						<tr>
 							<td>gas</td>
@@ -60,7 +64,7 @@
 							<td>{{ transaction['v'] }}</td>
 						</tr>
 						<tr>
-							<td>transactionIndex</td>
+							<td>交易位於此 Block 的第幾筆</td>
 							<td>{{ transaction['transactionIndex'] }}</td>
 						</tr>
 						<tr>
@@ -68,16 +72,12 @@
 							<td>{{ transaction['type'] }}</td>
 						</tr>
 						<tr>
-							<td>value</td>
-							<td>{{ transaction['value'] }}</td>
-						</tr>
-						<tr>
 							<td>input</td>
 							<td>
 								<textarea class="form-control">{{ transaction['input'] }}</textarea>
 								<form action="/search/to-utf-8" method="post">
 									<input type="hidden" name="data" value="{{ transaction['input'] }}">
-									<input type="submit" class="btn btn-primary mt-2" value="轉換為 UTF-8">
+									<input type="submit" class="btn btn-primary mt-2" value="轉換為 UTF-8 「中文字」">
 								</form>
 							</td>
 						</tr>

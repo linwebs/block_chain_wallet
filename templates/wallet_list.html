@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block sub_title %}儲存的錢包{% endblock sub_title %}
+{% block body %}
+	<div class="container mt-3">
+		<p>儲存的錢包</p>
+		<table class="table">
+			<thead>
+			<tr>
+				<th>#</th>
+				<th>錢包私鑰地址</th>
+				<th>儲存時間</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for i in wallets %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ i['key'] }}</td>
+					<td>{{ i['time'] }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock body %}

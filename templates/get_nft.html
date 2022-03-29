@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block sub_title %}NFT{% endblock sub_title %}
+{% block body %}
+	<div class="container mt-3">
+		<p class="display-4">此錢包擁有的 NFT 總數: {{ nft['total'] }}</p>
+		<p>錢包地址: {{ address }}</p>
+		{% for i in nfts %}
+			<div class="card mb-3">
+				<div class="row">
+					<div class="col-md-4"><img src="{{ i['token_single']['image'] }}" alt="i['token_single']['name']" class="img-fluid rounded-start">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<p class="h4">NFT 名稱: {{ i['name'] }}</p>
+							<p>官方名稱: {{ i['token_single']['name'] }}</p>
+							<p>NFT 類別: {{ i['name'] }}</p>
+							<p>Token ID: {{ i['token_id'] }}</p>
+							<p>Token 地址: {{ i['token_address'] }}</p>
+							<p>block_number_minted: {{ i['block_number_minted'] }}</p>
+							<p>block_number: {{ i['block_number'] }}</p>
+							<p>數量: {{ i['amount'] }}</p>
+							<p>智能合約類型: {{ i['contract_type'] }}</p>
+							<p>簽署時間: {{ i['synced_at'] }}</p>
+							<p>驗證: {{ i['is_valid'] }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock body %}

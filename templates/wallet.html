@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block sub_title %}查詢{% endblock sub_title %}
+{% block sub_title %}錢包{% endblock sub_title %}
 {% block body %}
 	<div class="container-fluid">
 		<div class="row">
@@ -65,7 +65,7 @@
 					<div class="card-body">
 						<h5 class="card-title">交易</h5>
 						<p class="card-text">產生一筆交易</p>
-						<a href="/wallet/transaction" class="btn btn-primary">前往產生</a>
+						<a href="/wallet/transaction" class="btn btn-primary">前往交易</a>
 					</div>
 				</div>
 			</div>
@@ -75,7 +75,7 @@
 					<div class="card-body">
 						<h5 class="card-title">NFT</h5>
 						<p class="card-text">查詢此錢包擁有的 NFT</p>
-						<form action="/wallet/balance" method="get" class="row g-3 align-items-center">
+						<form action="/wallet/nft" method="get" class="row g-3 align-items-center">
 							<div class="col-auto">
 								<label for="input-block-num-tran" class="col-form-label">錢包</label>
 							</div>

@@ -1,10 +1,12 @@
+import json
 import os
-import codecs
+import requests
 
 from flask import Flask, render_template, session, request, redirect, url_for
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 from eth_account import Account
+from datetime import datetime
 from eth_keys import keys
 from eth_utils import keccak
 import rlp
@@ -122,11 +124,182 @@ def page_get_balance():
 						   balance=balance)
 
 
+@app.route('/wallet/transaction', methods=['GET'])
+def page_make_transaction():
+	wallets = get_save_wallets()
+	return render_template('make_transaction.html', page='wallet', network=get_choose_network(), wallets=wallets)
+
+
+@app.route('/wallet/transaction', methods=['POST'])
+def page_do_transaction():
+	if request.form.get('send'):
+		s_addr_pri = request.form.get('send')
+	else:
+		s_addr_pri = ''
+
+	if request.form.get('receive'):
+		r_addr_pub = request.form.get('receive')
+	else:
+		r_addr_pub = ''
+
+	if request.form.get('value'):
+		value = request.form.get('value')
+	else:
+		value = ''
+
+	if request.form.get('gas'):
+		gas = request.form.get('gas')
+	else:
+		gas = ''
+
+	if request.form.get('gas_price'):
+		gas_price = request.form.get('gas_price')
+	else:
+		gas_price = ''
+
+	if request.form.get('data'):
+		data = request.form.get('data')
+	else:
+		data = ''
+
+	try:
+		trans = do_transaction(s_addr_pri, r_addr_pub, value, gas, gas_price, data)
+
+		return render_template('do_transaction_success.html',
+							   page='wallet',
+							   network=get_choose_network(),
+							   trans=trans)
+	except ValueError as error:
+		return render_template('do_transaction_failed.html',
+							   page='wallet',
+							   network=get_choose_network(),
+							   error=str(error))
+	except:
+		return '交易失敗'
+
+
+@app.route('/wallet/nft')
+def page_nft():
+	if request.args.get('address'):
+		address = request.args.get('address')
+	else:
+		address = ''
+	nft = get_nft(address)
+
+	if nft.status_code == 200:
+		nft_content = json.loads(nft.content)
+
+		nfts = []
+
+		for i in nft_content['result']:
+			token_single = get_single_nft(i['token_uri'])
+			nft_single = {
+				'name': i['name'],
+				'token_id': i['token_id'],
+				'token_address': i['token_address'],
+				'token_uri': i['token_uri'],
+				'metadata': i['metadata'],
+				'block_number_minted': i['block_number_minted'],
+				'block_number': i['block_number'],
+				'amount': i['amount'],
+				'contract_type': i['contract_type'],
+				'synced_at': i['synced_at'],
+				'is_valid': i['is_valid'],
+				'token_single': token_single
+			}
+			nfts.append(nft_single)
+
+		return render_template('get_nft.html',
+							   page='wallet',
+							   network=get_choose_network(),
+							   address=address,
+							   nft=nft_content,
+							   nfts=nfts)
+	else:
+		return nft.status_code
+
+
+@app.route('/wallet/save', methods=['POST'])
+def page_wallet_save():
+	key = request.form.get('key')
+	if key:
+		file = open('files/account.json', 'r')
+		data_origin = file.read()
+		file.close()
+		data = json.loads(data_origin)
+		now = datetime.now()
+		current_time = now.strftime("%Y/%m/%d %H:%M:%S")
+		data_new = {'key': key, 'time': current_time}
+		data.append(data_new)
+		file = open('files/account.json', 'w')
+		file.write(json.dumps(data))
+		file.close()
+		return render_template('save_file_success.html', page='wallet', network=get_choose_network())
+	return '錢包儲存失敗'
+
+
+@app.route('/wallet/list')
+def page_wallet_list():
+	wallets = get_save_wallets()
+	return render_template('wallet_list.html',
+						   page='wallet',
+						   network=get_choose_network(),
+						   wallets=wallets)
+
+
 @app.route('/note')
 def page_note():
 	file = open('files/note.html', 'r')
 	data = file.read()
+	file.close()
 	return render_template('note.html', page='note', network=get_choose_network(), content=data)
+
+
+def get_save_wallets():
+	file = open('files/account.json', 'r')
+	data = file.read()
+	wallets = json.loads(data)
+	file.close()
+	return wallets
+
+
+def get_single_nft(url):
+	result = requests.get(url)
+	if result.status_code == 200:
+		return json.loads(result.content)
+	else:
+		return {}
+
+
+def get_nft(address):
+	url = 'https://deep-index.moralis.io/api/v2/' + address + '/nft?chain=rinkeby&format=decimal'
+	headers = {'accept': 'application/json',
+			   'X-API-Key': 'EBssXwY9YNHLfjVHBUBHTdZFxPo278MxCIxrDoIjpt9H6GucQn1JR5jubBfN08EV'}
+	resp = requests.get(url, headers=headers)
+	return resp
+
+
+def do_transaction(s_addr_pri, r_addr_pub, value, gas, gas_price, data):
+	w3 = connect_network(network=get_choose_network())
+	nonce = w3.eth.getTransactionCount(calc_public_key(s_addr_pri))  # get nonce
+
+	# 建立一個 transaction
+	transaction = {
+		'nonce': nonce,  # 目前這個 transaction 是 A 發送的第幾個
+		'to': r_addr_pub,  # 接收者的 address
+		'value': w3.toWei(value, 'wei'),  # 單位是 wei
+		'gas': int(gas),  # 最多願意付多少 gas
+		'gasPrice': w3.toWei(gas_price, 'gwei'),  # 每個 gas 願意付多少手續費
+		'data': data.encode('utf-8').hex(),  # 夾帶的訊息
+	}
+
+	# 對 transaction 進行簽章
+	signed_transaction = w3.eth.account.signTransaction(transaction, s_addr_pri)
+
+	# 發送 raw transaction 並得到 transaction hash
+	transaction_hash = w3.eth.sendRawTransaction(signed_transaction.rawTransaction)
+
+	return transaction_hash
 
 
 def get_balance(address):

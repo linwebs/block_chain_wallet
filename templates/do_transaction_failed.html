@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block sub_title %}交易{% endblock sub_title %}
+{% block body %}
+	<div class="container mt-3">
+		<div class="alert alert-danger">交易失敗</div>
+		<p>失敗原因: {{ error }}</p>
+	</div>
+{% endblock body %}

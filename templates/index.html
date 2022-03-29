@@ -3,6 +3,22 @@
 {% block body %}
 	<div class="container-fluid">
 		<div class="row">
+			<div class="col-12 mt-3">
+				<div class="card">
+					<div class="card-body">
+						<p>使用說明：</p>
+						<ol>
+							<li>使用前請先至右上方選擇網路 (預設為 Rinkeby)</li>
+							<li>查詢功能可直接使用，請勿輸入錯誤的參數以免程式錯誤</li>
+							<li>交易功能會動用到帳戶資產，請謹慎操作</li>
+							<li>若要執行交易請先儲存錢包地址</li>
+							<li>NFT 查詢為獨家功能，請多加體驗！</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+
+
 			<div class="col-12">
 				<div class="alert alert-light text-center">-- 查詢 --</div>
 			</div>
@@ -122,7 +138,7 @@
 					<div class="card-body">
 						<h5 class="card-title">交易</h5>
 						<p class="card-text">產生一筆交易</p>
-						<a href="/wallet/transaction" class="btn btn-primary">前往產生</a>
+						<a href="/wallet/transaction" class="btn btn-primary">前往交易</a>
 					</div>
 				</div>
 			</div>
@@ -132,7 +148,7 @@
 					<div class="card-body">
 						<h5 class="card-title">NFT</h5>
 						<p class="card-text">查詢此錢包擁有的 NFT</p>
-						<form action="/wallet/balance" method="get" class="row g-3 align-items-center">
+						<form action="/wallet/nft" method="get" class="row g-3 align-items-center">
 							<div class="col-auto">
 								<label for="input-block-num-tran" class="col-form-label">錢包</label>
 							</div>
