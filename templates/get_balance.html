@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block sub_title %}錢包餘額{% endblock sub_title %}
+{% block body %}
+	<div class="container mt-2">
+		<p>錢包地址: {{ address }}</p>
+		<p class="h3">目前錢包餘額: {{ balance }} wei ({{ balance/1000000000000000000 }} ether)</p>
+	</div>
+{% endblock body %}

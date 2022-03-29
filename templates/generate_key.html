@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block sub_title %}產生錢包{% endblock sub_title %}
+{% block body %}
+	<div class="container mt-2">
+		<div class="alert alert-success">錢包已產生</div>
+		<p>私鑰: {{ pri_key }}</p>
+		<p>公鑰: {{ pub_key }}</p>
+		<form action="/wallet/save" method="post">
+			<input type="hidden" name="key" value="{{ pri_key }}">
+			<input type="submit" class="btn btn-primary mt-2" value="儲存錢包">
+		</form>
+	</div>
+{% endblock body %}

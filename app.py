@@ -31,6 +31,7 @@ def set_network():
 	session['network'] = network
 	return redirect(url_for('page_choose_network'))
 
+
 @app.route('/search')
 def page_search():
 	return render_template('search.html', page='search', network=get_choose_network())
@@ -48,13 +49,13 @@ def page_highest_block():
 @app.route('/search/block', methods=['GET'])
 def page_block_info():
 	if request.args.get('block'):
-		block_get = request.args.get('block')
+		block = request.args.get('block')
 	else:
-		block_get = 0
+		block = 0
 	return render_template('block_info.html',
 						   page='search',
 						   network=get_choose_network(),
-						   block=get_block(int(block_get)))
+						   block=get_block(int(block)))
 
 
 @app.route('/search/transaction', methods=['GET'])
@@ -62,7 +63,7 @@ def page_transaction_info():
 	if request.args.get('transaction'):
 		transaction = request.args.get('transaction')
 	else:
-		transaction_get = ''
+		transaction = ''
 	return render_template('transaction_info.html',
 						   page='search',
 						   network=get_choose_network(),
@@ -74,9 +75,51 @@ def page_to_utf_8():
 	data = request.form.get('data')
 	return bytes.fromhex(data[2:]).decode('utf-8')
 
+
 @app.route('/wallet')
 def page_wallet():
 	return render_template('wallet.html', page='wallet', network=get_choose_network())
+
+
+@app.route('/wallet/generate_key', methods=['GET'])
+def page_generate_key():
+	pri_key = generate_private_key()
+	pub_key = calc_public_key(pri_key)
+	return render_template('generate_key.html',
+						   page='wallet',
+						   network=get_choose_network(),
+						   pri_key=pri_key.hex(),
+						   pub_key=pub_key)
+
+
+@app.route('/wallet/public_key', methods=['GET'])
+def page_get_public_key():
+	if request.args.get('key'):
+		key = request.args.get('key')
+	else:
+		key = ''
+
+	pub_key = calc_public_key(key)
+	return render_template('get_public_key.html',
+						   page='wallet',
+						   network=get_choose_network(),
+						   pri_key=key,
+						   pub_key=pub_key)
+
+
+@app.route('/wallet/balance', methods=['GET'])
+def page_get_balance():
+	if request.args.get('address'):
+		address = request.args.get('address')
+	else:
+		address = ''
+
+	balance = get_balance(address)
+	return render_template('get_balance.html',
+						   page='wallet',
+						   network=get_choose_network(),
+						   address=address,
+						   balance=balance)
 
 
 @app.route('/note')
@@ -86,6 +129,19 @@ def page_note():
 	return render_template('note.html', page='note', network=get_choose_network(), content=data)
 
 
+def get_balance(address):
+	w3 = connect_network(network=get_choose_network())
+	return w3.eth.getBalance(address)
+
+
+def generate_private_key():
+	address = Account.create('KEYSMASH FJAFJKLDSKF7JKFDJ 1530')
+	return address.privateKey
+
+
+def calc_public_key(key):
+	address = Account.privateKeyToAccount(key)
+	return address.address
 
 
 def get_transaction(transaction):
