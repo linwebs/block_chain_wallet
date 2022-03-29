@@ -81,7 +81,9 @@ def page_wallet():
 
 @app.route('/note')
 def page_note():
-	return render_template('note.html', page='note', network=get_choose_network())
+	file = open('files/note.html', 'r')
+	data = file.read()
+	return render_template('note.html', page='note', network=get_choose_network(), content=data)
 
 
 
