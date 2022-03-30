@@ -268,7 +268,7 @@ def page_wallet_list():
 
 @app.route('/note')
 def page_note():
-	file = open('files/note.html', 'r')
+	file = open('files/note.html', 'r', encoding='UTF-8')
 	data = file.read()
 	file.close()
 	return render_template('note.html', page='note', network=get_choose_network(), content=data)
@@ -291,7 +291,7 @@ def get_single_nft(url):
 
 
 def get_nft(address):
-	url = 'https://deep-index.moralis.io/api/v2/' + address + '/nft?chain=rinkeby&format=decimal'
+	url = 'https://deep-index.moralis.io/api/v2/' + address + '/nft?chain=' + get_choose_network() + '&format=decimal'
 	headers = {
 		'accept': 'application/json',
 		'X-API-Key': config.moralis_api_key
