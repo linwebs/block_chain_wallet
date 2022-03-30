@@ -1,7 +1,7 @@
 import json
 import os
 import requests
-
+import config as config
 from flask import Flask, render_template, session, request, redirect, url_for
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
@@ -9,7 +9,6 @@ from eth_account import Account
 from datetime import datetime
 from eth_keys import keys
 from eth_utils import keccak
-import rlp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -293,8 +292,10 @@ def get_single_nft(url):
 
 def get_nft(address):
 	url = 'https://deep-index.moralis.io/api/v2/' + address + '/nft?chain=rinkeby&format=decimal'
-	headers = {'accept': 'application/json',
-			   'X-API-Key': 'EBssXwY9YNHLfjVHBUBHTdZFxPo278MxCIxrDoIjpt9H6GucQn1JR5jubBfN08EV'}
+	headers = {
+		'accept': 'application/json',
+		'X-API-Key': config.moralis_api_key
+	}
 	resp = requests.get(url, headers=headers)
 	return resp
 
@@ -361,15 +362,15 @@ def get_choose_network():
 
 def connect_network(network):
 	if network == 'mainnet':
-		w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/06d4df44ec80442d9adf6f0f34fa5483'))
+		w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/' + config.infura_project_id))
 	elif network == 'ropsten':
-		w3 = Web3(Web3.HTTPProvider('https://ropsten.infura.io/v3/06d4df44ec80442d9adf6f0f34fa5483'))
+		w3 = Web3(Web3.HTTPProvider('https://ropsten.infura.io/v3/' + config.infura_project_id))
 	elif network == 'kovan':
-		w3 = Web3(Web3.HTTPProvider('https://kovan.infura.io/v3/06d4df44ec80442d9adf6f0f34fa5483'))
+		w3 = Web3(Web3.HTTPProvider('https://kovan.infura.io/v3/' + config.infura_project_id))
 	elif network == 'goerli':
-		w3 = Web3(Web3.HTTPProvider('https://goerli.infura.io/v3/06d4df44ec80442d9adf6f0f34fa5483'))
+		w3 = Web3(Web3.HTTPProvider('https://goerli.infura.io/v3/' + config.infura_project_id))
 	else:
-		w3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/06d4df44ec80442d9adf6f0f34fa5483'))
+		w3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/' + config.infura_project_id))
 	w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 	return w3
 
