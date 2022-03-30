@@ -9,7 +9,7 @@
 				<select class="form-select" name="send" id="send" aria-describedby="send-help">
 					<option selected>-- 請選擇發送者的錢包地址 --</option>
 					{% for i in wallets %}
-						<option>{{ i['key'] }}</option>
+						<option value="{{ i['private_key'] }}">{{ loop.index }} - {{ i['public_key'] }}</option>
 					{% endfor %}
 				</select>
 				<div id="send-help" class="form-text">若錢包尚未出現在列表上，請先利用查詢公鑰功能匯入錢包</div>

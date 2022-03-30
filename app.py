@@ -126,8 +126,16 @@ def page_get_balance():
 
 @app.route('/wallet/transaction', methods=['GET'])
 def page_make_transaction():
-	wallets = get_save_wallets()
-	return render_template('make_transaction.html', page='wallet', network=get_choose_network(), wallets=wallets)
+	wallet_file = get_save_wallets()
+	wallet_list = []
+	for i in wallet_file:
+		private_key = i['key']
+		public_key = calc_public_key(private_key)
+		wallet_list.append({
+			'private_key': private_key,
+			'public_key': public_key
+		})
+	return render_template('make_transaction.html', page='wallet', network=get_choose_network(), wallets=wallet_list)
 
 
 @app.route('/wallet/transaction', methods=['POST'])
@@ -240,11 +248,23 @@ def page_wallet_save():
 
 @app.route('/wallet/list')
 def page_wallet_list():
-	wallets = get_save_wallets()
+	wallet_file = get_save_wallets()
+	wallet_list = []
+	for i in wallet_file:
+		private_key = i['key']
+		public_key = calc_public_key(private_key)
+		balance = get_balance(public_key)
+		wallet_list.append({
+			'time': i['time'],
+			'private_key': private_key,
+			'public_key': public_key,
+			'balance': balance
+		})
+
 	return render_template('wallet_list.html',
 						   page='wallet',
 						   network=get_choose_network(),
-						   wallets=wallets)
+						   wallets=wallet_list)
 
 
 @app.route('/note')

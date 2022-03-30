@@ -1,22 +1,38 @@
 {% extends 'base.html' %}
 {% block sub_title %}儲存的錢包{% endblock sub_title %}
 {% block body %}
-	<div class="container mt-3">
-		<p>儲存的錢包</p>
+	<div class="container-fluid mt-3">
+		<p class="display-5">儲存的錢包</p>
 		<table class="table">
 			<thead>
 			<tr>
 				<th>#</th>
-				<th>錢包私鑰地址</th>
+				<th>錢包地址 (公鑰)</th>
+				<th>餘額</th>
 				<th>儲存時間</th>
+				<th>NFT</th>
+				<th>錢包私鑰</th>
 			</tr>
 			</thead>
 			<tbody>
 			{% for i in wallets %}
 				<tr>
 					<td>{{ loop.index }}</td>
-					<td>{{ i['key'] }}</td>
+					<td>{{ i['public_key'] }}</td>
+					<td>{{ i['balance'] }} wei ({{ i['balance']/1000000000000000000 }} ether)</td>
 					<td>{{ i['time'] }}</td>
+					<td><a href="/wallet/nft?address={{ i['public_key'] }}" class="btn btn-primary btn-sm">前往查看</a></td>
+					<td>
+						<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse"
+								data-bs-target="#collapse-{{ loop.index }}" aria-expanded="false"
+								aria-controls="collapse-{{ loop.index }}">查看
+						</button>
+						<div class="collapse" id="collapse-{{ loop.index }}">
+							<div class="card card-body mt-2">
+								{{ i['private_key'] }}
+							</div>
+						</div>
+					</td>
 				</tr>
 			{% endfor %}
 			</tbody>
